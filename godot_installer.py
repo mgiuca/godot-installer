@@ -58,9 +58,10 @@ def install(zip_file_path, version, symlinks, user, dir):
     run_cmd(['mv'] + files + [dir], sudo_as=user)
 
   # Now set up symlinks.
-  os.chdir(dir)
-  for symlink in symlinks:
-    run_cmd(['ln', '-fs', binary, symlink], sudo_as=user)
+  if symlinks:
+    os.chdir(dir)
+    for symlink in symlinks:
+      run_cmd(['ln', '-fs', binary, symlink], sudo_as=user)
 
 def download_and_install(version, symlinks, user, dir):
   print(f'{version}, {symlinks}, {user}, {dir}')
