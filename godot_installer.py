@@ -34,7 +34,7 @@ def download_to_tmp(url):
   basename = os.path.basename(url)
   dest_path = os.path.join(tempfile.gettempdir(), basename)
   # Use curl instead of urllib to show a progress bar.
-  run_cmd(['curl', '-L', url, '-o', dest_path])
+  run_cmd(['curl', '--ssl-reqd', '-L', url, '-o', dest_path])
   return dest_path
 
 def install(zip_file_path, version, symlinks, user, dir):
