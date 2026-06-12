@@ -17,7 +17,7 @@ def run_cmd(cmd, sudo_as=None):
   if sudo_as:
     cmd = get_sudo_prefix(sudo_as) + cmd
   print(shlex.join(cmd), file=sys.stderr)
-  subprocess.run(cmd)
+  subprocess.run(cmd, check=True)
 
 def get_sudo_prefix(user):
   # Get the 'sudo' command prefix, based on the requested user. May return
