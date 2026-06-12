@@ -18,7 +18,11 @@ This will download and create three new files on your system:
 - `/usr/local/bin/godot` -> `Godot_v4.6-stable_linux.x86_64`
 
 Symlinks are optional and can be multiple; I like to set `godotx.y` for the
-latest build of every minor release, and `godot` for the latest stable.
+latest build of every minor release, and `godot` for the latest stable. As it
+never deletes old versions, over time you will accumulate all the versions (with
+their full name), symlinks to each minor release, and the main `godot` symlink
+pointing to the latest stable release. You can manually clean these up
+periodically but I like to keep them all for testing purposes.
 
 Useful for:
 
