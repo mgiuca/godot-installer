@@ -37,7 +37,7 @@ For full help:
 
 ## Windows
 
-On Windows, it installs to C:\Program Files\Godot by default (which is probably
+On Windows, it installs to `C:\Program Files\Godot` by default (which is probably
 not in your path), and has some caveats:
 
 - It needs a Bash-like environment (such as MinGW).
