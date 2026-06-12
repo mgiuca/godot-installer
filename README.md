@@ -11,8 +11,21 @@ Basic usage:
 
 (By default, installs in root and asks for sudo permission.)
 
+This will download and create three new files on your system:
+
+- `/usr/local/bin/Godot_v4.5-beta4_linux.x86_64`
+- `/usr/local/bin/godot4.5` -> `Godot_v4.5-beta4_linux.x86_64`
+- `/usr/local/bin/godot` -> `Godot_v4.5-beta4_linux.x86_64`
+
 Symlinks are optional and can be multiple; I like to set `godotx.y` for the
 latest build of every minor release, and `godot` for the latest stable.
+
+Useful for:
+
+- Installing pre-release versions and testing them out, without overwriting your
+  main `godot` install.
+- Maintaining a library of old versions for easily loading old projects without
+  upgrading them, or testing regressions across past versions.
 
 For full help:
 
@@ -35,7 +48,8 @@ The specific operations that this script does is:
 5. As the specified user: moves the Godot binary into the specified directory
    (by default, `/usr/local/bin`).
 6. As the specified user: creates symlinks as requested, in the specified
-   directory, to the newly unpacked binary.
+   directory, to the newly unpacked binary. Overwrites existing symlinks without
+   asking.
 7. Cleans up the downloaded and unzipped files in `/tmp`.
 
 ## Disclaimer
