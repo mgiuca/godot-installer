@@ -7,15 +7,15 @@ Currently only works on Linux.
 
 Basic usage:
 
-    ./godot_installer.py -s godot -s godot4.5 4.5-beta4
+    ./godot_installer.py -s godot -s godot4.6 4.6-stable
 
 (By default, installs in root and asks for sudo permission.)
 
 This will download and create three new files on your system:
 
-- `/usr/local/bin/Godot_v4.5-beta4_linux.x86_64`
-- `/usr/local/bin/godot4.5` -> `Godot_v4.5-beta4_linux.x86_64`
-- `/usr/local/bin/godot` -> `Godot_v4.5-beta4_linux.x86_64`
+- `/usr/local/bin/Godot_v4.6-stable_linux.x86_64`
+- `/usr/local/bin/godot4.6` -> `Godot_v4.6-stable_linux.x86_64`
+- `/usr/local/bin/godot` -> `Godot_v4.6-stable_linux.x86_64`
 
 Symlinks are optional and can be multiple; I like to set `godotx.y` for the
 latest build of every minor release, and `godot` for the latest stable.
