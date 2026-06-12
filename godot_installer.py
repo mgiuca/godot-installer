@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import contextlib
 import getpass
 import os.path
 import shlex
@@ -43,25 +44,24 @@ def install(zip_file_path, version, symlinks, user, dir):
   dir = os.path.abspath(dir)
   # Extract and move into the given directory.
   with tempfile.TemporaryDirectory() as temp_dir:
-    print(f'cd {shlex.quote(temp_dir)}', file=sys.stderr)
-    os.chdir(temp_dir)
-    run_cmd(['unzip', zip_file_path])
+    with contextlib.chdir(temp_dir):
+      run_cmd(['unzip', zip_file_path])
 
-    files = os.listdir('.')
-    if not files:
-      print('Error: No files extracted.', file=sys.stderr)
-      return 1
+      files = os.listdir('.')
+      if not files:
+        print('Error: No files extracted.', file=sys.stderr)
+        return 1
 
-    if user != getpass.getuser():
-      run_cmd(['chown', f'{user}:{user}'] + files, sudo_as=user)
+      if user != getpass.getuser():
+        run_cmd(['chown', f'{user}:{user}'] + files, sudo_as=user)
 
-    run_cmd(['mv'] + files + [dir], sudo_as=user)
+      run_cmd(['mv'] + files + [dir], sudo_as=user)
 
   # Now set up symlinks.
   if symlinks:
-    os.chdir(dir)
-    for symlink in symlinks:
-      run_cmd(['ln', '-fs', binary, symlink], sudo_as=user)
+    with contextlib.chdir(dir):
+      for symlink in symlinks:
+        run_cmd(['ln', '-fs', binary, symlink], sudo_as=user)
 
 def download_and_install(version, symlinks, user, dir):
   print(f'{version}, {symlinks}, {user}, {dir}')
