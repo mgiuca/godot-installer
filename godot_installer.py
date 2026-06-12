@@ -67,8 +67,7 @@ def download_and_install(version, symlinks, user, dir):
   print(f'{version}, {symlinks}, {user}, {dir}')
 
   if not os.path.isdir(dir):
-    print(f'{dir} is not an existing directory', file=sys.stderr)
-    return 1
+    run_cmd(['mkdir', '-p', dir], sudo_as=user)
 
   url = f'https://github.com/godotengine/godot-builds/releases/download/{version}/Godot_v{version}_{BIN_SUFFIX}.zip'
   zip_file_path = download_to_tmp(url)
