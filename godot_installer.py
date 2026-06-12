@@ -4,14 +4,26 @@ import argparse
 import contextlib
 import getpass
 import os.path
+import platform
 import shlex
 import shutil
 import subprocess
 import sys
 import tempfile
 
-# TODO: Doing Windows will require some work related to filename and symlinks.
-BIN_SUFFIX = 'linux.x86_64'
+PLATFORM = platform.system()
+if PLATFORM == 'Linux':
+  BIN_SUFFIX = 'linux.x86_64'
+  DEFAULT_USER = 'root'
+  DEFAULT_DIR = '/usr/local/bin'
+elif PLATFORM == 'Windows':
+  BIN_SUFFIX = 'win64.exe'
+  # Windows has no 'root' user, so just use the normal user by default, which is
+  # expected to be an admin. (If you give --user you can still try to use sudo.)
+  DEFAULT_USER = getpass.getuser()
+  DEFAULT_DIR = os.path.join(os.getenv('ProgramFiles'), 'Godot')
+else:
+  raise Exception(f'Unsupported platform: {PLATFORM}')
 
 def run_cmd(cmd, sudo_as=None):
   """Logs and runs a command."""
@@ -61,7 +73,14 @@ def install(zip_file_path, version, symlinks, user, dir):
   if symlinks:
     with contextlib.chdir(dir):
       for symlink in symlinks:
+        if PLATFORM == 'Windows' and not symlink.endswith('.exe'):
+          # Note: On Windows, ln is just going to create a copy. Oh well.
+          symlink += '.exe'
         run_cmd(['ln', '-fs', binary, symlink], sudo_as=user)
+        if PLATFORM == 'Windows':
+          console_binary = binary[:-4] + '_console.exe'
+          symlink = symlink[:-4] + '_console.exe'
+          run_cmd(['ln', '-fs', console_binary, symlink], sudo_as=user)
 
 def download_and_install(version, symlinks, user, dir):
   print(f'{version}, {symlinks}, {user}, {dir}')
@@ -90,10 +109,10 @@ def main(args=None):
                       help='Godot version (e.g. 4.5-beta4)')
   parser.add_argument('-s', metavar='SYMLINK', dest='symlinks', action='append',
                       help='Symbolic links to alias (e.g. -s godot -s godot4.5)')
-  parser.add_argument('--user', default='root',
-                      help='User to own binary and symlinks (default: root)')
-  parser.add_argument('--dir', default='/usr/local/bin',
-                      help='Directory to store binary and symlinks in (default: /usr/local/bin)')
+  parser.add_argument('--user', default=DEFAULT_USER,
+                      help=f'User to own binary and symlinks (default: {DEFAULT_USER})')
+  parser.add_argument('--dir', default=DEFAULT_DIR,
+                      help=f'Directory to store binary and symlinks in (default: {DEFAULT_DIR})')
 
   args = parser.parse_args(args)
 

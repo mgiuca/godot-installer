@@ -3,7 +3,7 @@
 This is a simple Python script that fetches a specific version of Godot and
 installs it, setting up symlinks.
 
-Currently only works on Linux.
+Currently only works on Linux and Windows (see caveats below).
 
 Basic usage:
 
@@ -34,6 +34,19 @@ Useful for:
 For full help:
 
     ./godot_installer.py --help
+
+## Windows
+
+On Windows, it installs to C:\Program Files\Godot by default (which is probably
+not in your path), and has some caveats:
+
+- It needs a Bash-like environment (such as MinGW).
+- The "symlinks" will just be copies.
+- It automatically adds `.exe` to the end of the symlink path, and also copies
+  the `_console.exe` file.
+- It assumes your user is an administrator, and does not try to use sudo by
+  default. If you use `--user` to install as a different user, it will try to
+  use the system `sudo`, which is disabled by default.
 
 ## Details
 
