@@ -11,7 +11,7 @@ import sys
 import tempfile
 
 # TODO: Doing Windows will require some work related to filename and symlinks.
-OS = 'linux.x86_64'
+BIN_SUFFIX = 'linux.x86_64'
 
 def run_cmd(cmd, sudo_as=None):
   """Logs and runs a command."""
@@ -40,7 +40,7 @@ def download_to_tmp(url):
 
 def install(zip_file_path, version, symlinks, user, dir):
   # Needed, as we'll be changing directory.
-  binary = f'Godot_v{version}_{OS}'
+  binary = f'Godot_v{version}_{BIN_SUFFIX}'
   dir = os.path.abspath(dir)
   # Extract and move into the given directory.
   with tempfile.TemporaryDirectory() as temp_dir:
@@ -70,7 +70,7 @@ def download_and_install(version, symlinks, user, dir):
     print(f'{dir} is not an existing directory', file=sys.stderr)
     return 1
 
-  url = f'https://github.com/godotengine/godot-builds/releases/download/{version}/Godot_v{version}_{OS}.zip'
+  url = f'https://github.com/godotengine/godot-builds/releases/download/{version}/Godot_v{version}_{BIN_SUFFIX}.zip'
   zip_file_path = download_to_tmp(url)
 
   try:
